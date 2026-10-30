@@ -34,12 +34,12 @@ managedClusterSets:
     labels:
       openshift-version: '4.21'
       ### OpenShift GitOps
-      gitops: 'true'
+      gitops: 'false'
       gitops-subscription-name: openshift-gitops-operator
       gitops-channel: gitops-1.21
       gitops-source: redhat-operators
       gitops-source-namespace: openshift-marketplace
-      gitops-dev: 'true'
+      gitops-dev: 'false'
       ### ServiceMesh / Tempo / Kiali / OpenTelemetry — disabled on SNO
       tempo: 'false'
       tempo-subscription-name: tempo-product
@@ -98,7 +98,7 @@ managedClusterSets:
       local-storage-source: redhat-operators
       local-storage-source-namespace: openshift-marketplace
       ### Advanced Cluster Security
-      acs: 'true'
+      acs: 'false'
       acs-subscription-name: rhacs-operator
       acs-channel: stable
       acs-source: redhat-operators
