@@ -1,0 +1,116 @@
+# Minimal Hub1 configuration — spoke hub managed by hub-of-hubs
+# self-managed: 'false' — ACM is installed ON this cluster BY the HoH, not here
+# Keeps: GitOps, ACM observability, provisioning capability, console, observability
+# Removes: ODF, ACS, full dev stack, Loki, Logging, Compliance
+hubClusterSets:
+  hub1:
+    config:
+      compliance:
+        scans:
+          - name: stig-v2r3
+            profiles:
+              - ocp4-stig-v2r3
+              - ocp4-stig-node-v2r3
+              - rhcos4-stig-v2r3
+            scanSetting: default
+            autoApply: false
+            exclude:
+              - ocp4-stig-v2r3-project-config-and-template-network-policy
+              - ocp4-stig-v2r3-project-config-and-template-network-policy-1
+              - ocp4-stig-v2r3-project-config-and-template-resource-quota
+              - ocp4-stig-v2r3-project-config-and-template-resource-quota-1
+    labels:
+      openshift-version: '4.21'
+      self-managed: 'false'
+      ### OpenShift GitOps (required — hub1 needs its own ArgoCD for config ConfigMaps)
+      gitops: 'true'
+      gitops-subscription-name: openshift-gitops-operator
+      gitops-disable-default-argocd: 'true'
+      gitops-channel: gitops-1.21
+      gitops-source: redhat-operators
+      gitops-source-namespace: openshift-marketplace
+      ### ACM addons (ACM itself is installed by HoH)
+      acm-observability: 'false'
+      acm-availability-config: 'Basic'
+      acm-search-storage: 'true'
+      acm-enable-provisioning: 'true'
+      ### Cluster provisioning (hub1 can provision spoke clusters)
+      cluster-install: 'true'
+      ### AutoShift console plugin
+      autoshift-console: 'true'
+      ### Global observability (ships metrics back to HoH)
+      global-observability: 'false'
+      ### COO
+      coo: 'false'
+      coo-subscription-name: cluster-observability-operator
+      coo-channel: stable
+      coo-source: redhat-operators
+      coo-source-namespace: openshift-marketplace
+      ### Node maintenance
+      node-maintenance: 'true'
+      node-maintenance-subscription-name: node-maintenance-operator
+      node-maintenance-channel: stable
+      node-maintenance-source: redhat-operators
+      node-maintenance-source-namespace: openshift-marketplace
+      node-maintenance-version: 'node-maintenance-operator.v5.7.1'
+      ### External secrets
+      external-secrets-operator: 'true'
+      external-secrets-operator-subscription-name: openshift-external-secrets-operator
+      external-secrets-operator-channel: stable-v1
+      external-secrets-operator-source: redhat-operators
+      external-secrets-operator-source-namespace: openshift-marketplace
+      ### Disabled — add when infrastructure is ready
+      odf: 'false'
+      odf-subscription-name: odf-operator
+      odf-channel: stable-4.22
+      odf-source: redhat-operators
+      odf-source-namespace: openshift-marketplace
+      acs: 'false'
+      acs-subscription-name: rhacs-operator
+      acs-channel: stable
+      acs-source: redhat-operators
+      acs-source-namespace: openshift-marketplace
+      loki: 'false'
+      loki-subscription-name: loki-operator
+      loki-channel: stable-6.6
+      loki-source: redhat-operators
+      loki-source-namespace: openshift-marketplace
+      loki-size: 1x.extra-small
+      loki-storageclass: gp3-csi
+      loki-lokistack-name: logging-lokistack
+      logging: 'false'
+      logging-subscription-name: cluster-logging
+      logging-channel: stable-6.6
+      logging-source: redhat-operators
+      logging-source-namespace: openshift-marketplace
+      compliance: 'false'
+      compliance-subscription-name: compliance-operator
+      compliance-source: redhat-operators
+      compliance-source-namespace: openshift-marketplace
+      compliance-channel: stable
+      gitops-dev: 'false'
+      dev-spaces: 'false'
+      dev-spaces-subscription-name: devspaces
+      dev-spaces-channel: stable
+      dev-spaces-source: redhat-operators
+      dev-spaces-source-namespace: openshift-marketplace
+      dev-hub: 'false'
+      dev-hub-subscription-name: rhdh
+      dev-hub-channel: fast-1.10
+      dev-hub-source: redhat-operators
+      dev-hub-source-namespace: openshift-marketplace
+      pipelines: 'false'
+      pipelines-subscription-name: openshift-pipelines-operator-rh
+      pipelines-channel: pipelines-1.23
+      pipelines-source: redhat-operators
+      pipelines-source-namespace: openshift-marketplace
+      tas: 'false'
+      tas-subscription-name: rhtas-operator
+      tas-channel: stable
+      tas-source: redhat-operators
+      tas-source-namespace: openshift-marketplace
+      quay: 'false'
+      quay-subscription-name: quay-operator
+      quay-channel: stable-3.18
+      quay-source: redhat-operators
+      quay-source-namespace: openshift-marketplace
