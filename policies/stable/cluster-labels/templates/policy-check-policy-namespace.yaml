@@ -32,7 +32,8 @@ spec:
           severity: high
           object-templates-raw: |
             {{ "{{-" }} $ns := (lookup "v1" "Namespace" "" "{{ $policyNamespace }}") | default dict {{ "}}" }}
-            {{ "{{-" }} $nsLabels := (index $ns "metadata" "labels") | default dict {{ "}}" }}
+            {{ "{{-" }} $nsMeta := (index $ns "metadata") | default dict {{ "}}" }}
+            {{ "{{-" }} $nsLabels := (index $nsMeta "labels") | default dict {{ "}}" }}
             {{ "{{-" }} $autoshiftLabel := (index $nsLabels "autoshift.io/createdByAutoshift") | default "" {{ "}}" }}
             {{ "{{-" }} if ne $autoshiftLabel "" {{ "}}" }}
             - complianceType: mustnothave
